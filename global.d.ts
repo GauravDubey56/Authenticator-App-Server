@@ -12,6 +12,9 @@ interface ServiceResponse {
     message: string,
     data: object | null | string
 }
+interface TokenResponse extends ServiceResponse {
+    data: object
+}
 interface NewUser {
     FirstName: string,
     LastName: string,
@@ -40,4 +43,23 @@ interface RouterRegister {
 interface APIRegister {
     routes: Array<RouterRegister>,
     path: string
+}
+interface ProtectedRequest extends Request {
+    user: object | string | null
+}
+interface Project {
+    Name: string;
+    UserId: string;
+    WebhookUrl?: string;
+    CallbackUrl: string;
+    AccessKeyId: string;
+    AccessKey: string
+}
+interface AccessKey {
+    AccessKeyId: string,
+    AccessKey: string
+}
+interface callbackParams {
+    WebhookUrl?: string,
+    CallbackUrl: string
 }
