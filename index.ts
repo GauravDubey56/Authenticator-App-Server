@@ -25,7 +25,12 @@ app.use((error: any, req: any, res: any, next: any) => {
     if (error && error instanceof Error) {
         return res.status(500).json({
             message: "Internal Server Error",
-            error: error.message
+            ...(process.env.NODE_ENV?.toUpperCase() != "PRODUCTION" && {error: error.message})
+        })
+    } else if(error) {
+        return res.status(500).json({
+            message: "Something went wrong while processing your request",
+            error
         })
     } else {
         next();

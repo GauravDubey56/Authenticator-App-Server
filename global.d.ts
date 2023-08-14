@@ -6,11 +6,14 @@ interface UserToken {
     TokenCreatedAt? : string
 }
 
-
+type fetchDocuments = {
+    list: Array<any>,
+    count: number
+}
 interface ServiceResponse {
     code: number,
     message: string,
-    data: object | null | string
+    data: object | null | string | fetchDocuments
 }
 interface TokenResponse extends ServiceResponse {
     data: object
@@ -62,4 +65,10 @@ interface AccessKey {
 interface callbackParams {
     WebhookUrl?: string,
     CallbackUrl: string
+}
+
+interface findOptions {
+    limit?: number,
+    offset?: number,
+    count?: boolean
 }

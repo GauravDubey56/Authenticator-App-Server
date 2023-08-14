@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 const projectSchema = new Schema<Project>({
     Name: { type: String, required: true },
     UserId: { type: String, required: true },
@@ -8,6 +8,6 @@ const projectSchema = new Schema<Project>({
     AccessKeyId: { type: String, required: true }
 });
 
-const Project = model<Project>('User', projectSchema);
+const Project = model<Project>('projects', projectSchema);
 
 export default Project;

@@ -11,6 +11,7 @@ const authRouters: APIRegister = {
 const projectRouters: APIRegister = {
     routes: [
         { route: "/", method: "POST", middlewares: [Middlewares.authorizeUser], controller: ProjectControllers.addProject },
+        { route: "/", method: "GET", middlewares: [Middlewares.authorizeUser], controller: ProjectControllers.getProjects }
     ],
     path: "/project"
 }

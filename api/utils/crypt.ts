@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET, ENC_TOKEN} from './config';
-import * as crypto from 'crypto';
+import crypto from 'crypto'
 export const generateHash = async (password: string): Promise<string> => {
     const hash = await bcrypt.hash(password, 10);
     return hash;

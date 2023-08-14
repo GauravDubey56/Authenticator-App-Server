@@ -17,6 +17,6 @@ const userSchema = new Schema<User>({
   FullName: { type: String, get: getFullName }
 });
 
-const Users = model<User>('User', userSchema);
+const Users = model<User>('users', userSchema);
 
 export default Users;
