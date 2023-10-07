@@ -1,15 +1,17 @@
 import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
-import os from 'os'
-
-dotenv.config();
+import * as dotenv from "dotenv";
+dotenv.config({ path: __dirname+ '/.env' });
+import os from 'os';
+import AuthRouter from './routes/AuthRoutes'
+import { nextErrorHandler } from './utils/middleware';
 
 const app: Express = express();
-const port = process.env.PORT || 4001;
-
+const port = process.env.PORT;
 app.get('/health', (req: Request, res: Response) => {
     res.send(`Server running at port ${port}`);
 });
+app.use(AuthRouter)
+app.use(nextErrorHandler);
 app.listen(port, () => {
-    console.log(`⚡️[server]: Server is running at ${os.hostname()}:${port}`);
+    console.log(`Server is running at ${os.hostname()}:${port}`);
 });
