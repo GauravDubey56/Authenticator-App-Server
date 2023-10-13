@@ -3,20 +3,23 @@ import DEFAULT_DB_CONFIG from "./config";
 import { DB_CONNECT_URL } from "../config/constants";
 class DatabaseConnection extends DataSource {
   #dbConnectionUrl: string;
-  private static connection: any;
+  private static connection: DataSource;
+  private static dataSource: DataSource;
   private constructor(url: string, dbConfig: DataSourceOptions) {
     super(dbConfig);
     this.#dbConnectionUrl = url;
   }
-  static getInstance(url?: string) {
+  static async getInstance(url?: string) {
     if (!url) {
       url = DB_CONNECT_URL;
     }
-    if (this.connection) {
-      return this.connection;
+    if (this.dataSource) {
+      return this.dataSource
     }
+  
     this.connection = new DatabaseConnection(url, DEFAULT_DB_CONFIG);
-    return this.connection;
+    this.dataSource = await this.connection.initialize();
+    return this.dataSource;
   }
 }
 

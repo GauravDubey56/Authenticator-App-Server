@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from "typeorm";
 export class CreateTableClient1697139374858 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-        CREATE TABLE clients (
+        CREATE TABLE IF NOT EXISTS clients (
             id serial4 NOT NULL,
             owner_id uuid DEFAULT uuid_generate_v4 (),
             client_info jsonb NULL,
@@ -16,7 +16,7 @@ export class CreateTableClient1697139374858 implements MigrationInterface {
             CONSTRAINT "PK_5a764a1d6e2063aa892513473e3" PRIMARY KEY (id),
             CONSTRAINT "UQ_66a511a688df322c9a6a9f97bde" UNIQUE (email)
         );
-        CREATE UNIQUE INDEX pkey ON public.clients USING btree (id);
+        CREATE UNIQUE INDEX IF NOT EXISTS pkey ON public.clients USING btree (id);
         
     `);
   }
