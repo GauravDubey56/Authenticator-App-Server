@@ -7,3 +7,21 @@ type apiResponse = {
   statusCode: number;
   message?: string;
 };
+
+type serviceResponse = {
+  status: number;
+  data?: any;
+  message: string;
+  error?: typeof Error | string | object;
+};
+type serviceError = string | typeof Error | object | null;
+type clientInfo = {
+  githubUsername?: string;
+};
+
+type clientTokenData = {
+  email: string;
+  clientId: string;
+  name: string;
+  githubUsername: string | undefined;
+};

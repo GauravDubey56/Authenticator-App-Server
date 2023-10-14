@@ -5,6 +5,7 @@ export const GITHUB_CLIENT_SECRET: EnvVar = process.env.GITHUB_CLIENT_SECRET;
 export const SERVER_HOST_URL: EnvVar = process.env.SERVER_HOST_URL;
 export const GITHUB_CALLBACK_URL: string = `${process.env.SERVER_HOST_URL}/auth/githubCallback`;
 export const GITHUB_AUTH_URL: string = `https://github.com/login/oauth/authorize`;
+export const GITHUB_API_URL: string = `https://api.github.com`;
 export const GITHUB_USER_API: string = `https://api.github.com/user`;
 export const DB_CONNECT_URL: string =
   process.env.DB_CONNECT_URL || process.env.AUTH_DB_LOCAL_CONNECT || "";

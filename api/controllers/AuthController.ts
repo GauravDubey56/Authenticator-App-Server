@@ -2,13 +2,11 @@ import GithubAuthService from "../services/GithubAuthService";
 import { Request, Response } from "express";
 import * as Log from "../utils/logger";
 import sendResponse from "../utils/response";
-import Logger from "../utils/logging";
-
-const GithubService = new GithubAuthService();
+import UserService from "../services/ClientService";
+import ClientService from "../services/ClientService";
 
 export const generateAuthUrl = async (req: Request, res: Response) => {
-  console.log(req.query);
-  const authUrl = await GithubService.generateAuthUrl();
+  const authUrl = await GithubAuthService.generateAuthUrl();
   Log.debug(`Auth url `, authUrl);
   // return res.redirect(authUrl);
   sendResponse(res, {
@@ -21,10 +19,16 @@ export const generateAuthUrl = async (req: Request, res: Response) => {
 
 export const handleGithubCallback = async (req: Request, res: Response) => {
   if (req?.query?.code) {
-    const user = await GithubService.getUserFromAuthCode(req.query.code);
+    const GithubUserService = new GithubAuthService(req.query.code);
+    const githubUserData = await GithubUserService.getUserFromAuthCode();
+    const githubEmail = await GithubUserService.getEmailsByUser();
+    const newUser = await ClientService.createUserFromGithub({
+      githubUserData,
+      githubEmail,
+    });
     sendResponse(res, {
       statusCode: 200,
-      data: user,
+      data: newUser,
     });
   } else {
     sendResponse(res, {

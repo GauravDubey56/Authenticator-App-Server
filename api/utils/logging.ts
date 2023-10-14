@@ -6,6 +6,9 @@ class Logger {
   constructor(logFilename: string) {
     this.customFilename = logFilename;
   }
+  static error(...message: any[]) {
+    console.error(...message);
+  }
   static log(...message: any[]) {
     try {
       const date = new Date().toISOString();
