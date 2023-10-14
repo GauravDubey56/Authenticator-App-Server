@@ -23,7 +23,7 @@ export class CreateTableClient1697139374858 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-        DROP table clients;
+        DROP table if exists clients;
     `)
   }
 }

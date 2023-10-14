@@ -8,7 +8,8 @@
     "start": "node -r dotenv/config dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -r dotenv/config -q dist/index.js\"",
     "migration:create": "npx tsc && node dist/database/migration-runner/create-migration.js",
-    "migrate": "npx tsc && node -r dotenv/config dist/database/migration-runner/run-migrations.js"
+    "migration:run": "npx tsc && node -r dotenv/config dist/database/migration-runner/run-migrations.js",
+    "migration:revert": "npx tsc && node -r dotenv/config dist/database/migration-runner/down-migration.js"
   },
   "author": "",
   "license": "ISC",
