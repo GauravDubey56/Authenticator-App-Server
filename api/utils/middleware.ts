@@ -2,7 +2,7 @@ import { NextFunction, Response, Request, ErrorRequestHandler } from "express";
 import CustomError from "./error";
 import sendResponse from "./response";
 import AuthToken from "../services/AuthToken";
-import { AuthenticatedRequest } from "../interfaces/auth.interface";
+import { AuthenticatedRequest } from "../interfaces/AuthInterface";
 const handleApiException = (error: any) => {
   if (error instanceof CustomError) {
     let errorObject: any = {};
@@ -30,6 +30,7 @@ export const asyncHandler =
       await fn(req, res, next);
     } catch (error) {
       const errorObject = handleApiException(error);
+      console.error(error);
       sendResponse(res, errorObject);
     }
   };
@@ -55,8 +56,13 @@ export const nextErrorHandler = async (
   }
 };
 
-export const authHandler = (req: AuthenticatedRequest, res: Response) => {
+export const authHandler = (req: any, res: Response, next: NextFunction) => {
   const auth = new AuthToken();
-  const authResponse = auth.decryptTokenFromHeaders(req);
-  
+  const authResponse = auth.decryptTokenFromHeaders(req as AuthenticatedRequest);
+  if(authResponse.error) {
+    throw new CustomError('Unauthorized access', 401);
+  } else {
+    req.user = authResponse.data
+    next();
+  }
 };

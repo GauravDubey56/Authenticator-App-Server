@@ -15,10 +15,16 @@ export class ClientApp {
   name: string;
   @ManyToOne(() => Client, (client: Client) => client.apps)
   client: Client;
+  @Column({name: "clientId", type: "integer"})
+  clientId: number;
   @Column({ name: "app_id", type: "varchar", unique: true })
-  appId: number;
+  appId: string;
   @Column({ name: "access_key", type: "varchar" })
-  accessKey: number;
+  accessKey: string;
+  @Column({ name: "salt", type: "varchar" })
+  salt: string;
+  @Column({ name: "hash", type: "varchar" })
+  hash: string;
   @Column({ name: "callback_url", type: "varchar" })
   callbackUrl: string;
   @Column({ name: "app_info", type: "json" })

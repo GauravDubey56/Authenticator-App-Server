@@ -14,3 +14,4 @@ export const DB_PASSWORD = process.env.DB_PASSWORD;
 export const DB_PORT = Number(process.env.DB_PORT) || 26257;
 export const DB_HOST = process.env.DB_HOST;
 export const DB_NAME = process.env.DB_NAME;
+export const AUTH_PAGE_URL: string = process.env.AUTH_PAGE_URL || "";

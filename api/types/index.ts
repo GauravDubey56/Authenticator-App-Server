@@ -21,7 +21,7 @@ type clientInfo = {
 
 type clientTokenData = {
   email: string;
-  clientId: string;
+  clientId: number;
   name: string;
   githubUsername: string | undefined;
 };

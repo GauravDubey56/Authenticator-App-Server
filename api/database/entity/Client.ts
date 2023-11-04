@@ -39,7 +39,7 @@ export class Client {
     return {
       name: fullName,
       email: this.email,
-      clientId: this.ownerId,
+      clientId: this.id,
       githubUsername: this?.clientInfo?.githubUsername,
     };
   }

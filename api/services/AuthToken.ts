@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { AuthenticatedRequest } from "../interfaces/auth.interface";
+import { AuthenticatedRequest } from "../interfaces/AuthInterface.js";
 import CustomError from "../utils/error";
 import ServiceResponse from "./Response";
 class AuthToken {
@@ -21,7 +21,7 @@ class AuthToken {
       if (!token) {
         throw new CustomError("Unauthorized access: No token provided", 401);
       }
-      const tokenData = jwt.verify(token, this.#jwtToken);
+      const tokenData = jwt.verify(token, this.#jwtToken) as clientTokenData
       req.user = tokenData;
       response.success("User authenticated", tokenData);
     } catch (error) {
@@ -33,3 +33,7 @@ class AuthToken {
 }
 
 export default AuthToken;
+const DefaultAuthHandler = new AuthToken();
+export {
+  DefaultAuthHandler
+}

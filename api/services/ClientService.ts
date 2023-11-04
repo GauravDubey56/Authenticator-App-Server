@@ -3,6 +3,7 @@ import { Client } from "../database/entity/Client";
 import Logger from "../utils/logging";
 import ServiceResponse from "./Response";
 import { randomUUID } from "crypto";
+import { DefaultAuthHandler } from "./AuthToken";
 
 class ClientService {
   static splitName(name: string) {
@@ -45,7 +46,10 @@ class ClientService {
       client.ownerId = randomUUID();
       await queryRunner.manager.save(client);
       const clientData = client.getClient();
-      response.success("New user created", clientData);
+      const jwtToken = DefaultAuthHandler.createToken(clientData);
+      response.success("New user created", {
+        token: jwtToken,
+      });
     } catch (error: any) {
       if (queryRunner.isTransactionActive) {
         await queryRunner.rollbackTransaction();
