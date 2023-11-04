@@ -1,11 +1,12 @@
 import { ClientApp } from "../database/entity/ClientApp";
 import Db from "../database/data-source";
 import CustomError from "../utils/error";
-import { createNewApp } from "../interfaces/ClientAppInterface";
+import { CreateNewApp, UpdateApp } from "../interfaces/ClientAppInterface";
 import ServiceResponse from "./Response";
 import Crypto from "crypto";
 import * as constants from "../config/constants";
 import queryString from "querystring";
+import dataSource from "../database/migration-runner";
 class ClientAppService {
   #ownerId: number;
   constructor(ownerId: number) {
@@ -63,7 +64,25 @@ class ClientAppService {
       hashedKey: [salt, hashedPassword].join("#"),
     };
   }
-  async createApp({ callbackUrl, appName }: createNewApp) {
+  async getAppById(id: number) {
+    const data = await Db.getRepository(ClientApp)
+      .createQueryBuilder("client_app")
+      .select("client_app.name", "AppName")
+      .addSelect("client_app.id", "AppId")
+      .addSelect("client_app.callback_url", "CallbackUrl")
+      .addSelect("client_app.app_id", "AppAccessId")
+      .where(`client_app.id = ${id}`)
+      .andWhere("client_app.clientId = :ownerId", {
+        ownerId: this.#ownerId,
+      })
+      .execute();
+    if (data) {
+      return data;
+    } else {
+      throw new CustomError("No data found for given id", 400);
+    }
+  }
+  async createApp({ callbackUrl, appName }: CreateNewApp) {
     const response = new ServiceResponse(400);
     const existingApp = await this.getAppByName(appName);
     if (existingApp) {
@@ -92,8 +111,8 @@ class ClientAppService {
         .getResponse();
     }
   }
-  async getApps() {
-    const data = await Db.getRepository(ClientApp)
+  async getApps(id ?: number) {
+    let data = Db.getRepository(ClientApp)
       .createQueryBuilder("client_app")
       .select("client_app.name", "AppName")
       .addSelect("client_app.id", "AppId")
@@ -102,12 +121,35 @@ class ClientAppService {
       .where("client_app.clientId = :ownerId", {
         ownerId: this.#ownerId,
       })
-      .execute();
+    if (id) {
+      data = data.andWhere("client_app.id = :appId", {
+        appId: id,
+      });
+    }
+    data = await data.execute();
     const response = new ServiceResponse(200);
     return response
       .setData(data)
       .setMessage(`${data ? "Apps fetched" : "No app found"} `)
       .getResponse();
+  }
+  async updateApp(appId: number, updateData: UpdateApp) {
+    const response = new ServiceResponse(200);
+    await this.getAppById(appId);
+    let clientApp: any = {};
+    if (updateData.appName) {
+      clientApp.name = updateData.appName;
+    }
+    if (updateData.callbackUrl) {
+      clientApp.callbackUrl = updateData.callbackUrl;
+    }
+    await Db
+      .getRepository(ClientApp)
+      .update(updateData, {
+        id: appId
+      })
+      .catch(console.error);
+    return response.setMessage("App updated").getResponse();
   }
 }
 

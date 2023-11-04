@@ -14,5 +14,10 @@ router.get(
   authHandler,
   asyncHandler(AppsController.getClientApps)
 );
+router.patch(
+  "/client/app",
+  authHandler,
+  asyncHandler(AppsController.updateApp)
+);
 
 export default router;
