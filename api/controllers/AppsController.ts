@@ -17,3 +17,28 @@ export const createNewApp = async (
     data: newApp.data,
   });
 };
+
+export const getClientApps = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  const clientApp = new ClientAppService(req.user.clientId);
+  const appsData = await clientApp.getApps(Number(req.query.appId));
+  sendResponse(res, {
+    statusCode: appsData.status,
+    message: appsData.message,
+    data: appsData.data,
+  });
+};
+export const updateApp = async (req: AuthenticatedRequest, res: Response) => {
+  const clientApp = new ClientAppService(req.user.clientId);
+  const updateApp = await clientApp.updateApp(
+    Number(req.query.appId),
+    req.body
+  );
+  sendResponse(res, {
+    statusCode: updateApp.status,
+    message: updateApp.message,
+    data: updateApp.data,
+  });
+};

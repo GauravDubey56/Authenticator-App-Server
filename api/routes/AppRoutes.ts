@@ -9,6 +9,15 @@ router.post(
   authHandler,
   asyncHandler(AppsController.createNewApp)
 );
-
+router.get(
+  "/client/app",
+  authHandler,
+  asyncHandler(AppsController.getClientApps)
+);
+router.patch(
+  "/client/app",
+  authHandler,
+  asyncHandler(AppsController.updateApp)
+);
 
 export default router;

@@ -36,13 +36,7 @@ class ServiceResponse {
     return this;
   }
   setDataObject(dataObject: any) {
-    if(!this.data) {
-        this.data = {};
-    }
-    this.data = {
-        ...this.data,
-        ...dataObject
-    }
+    this.data = dataObject;
     return this;
   }
   setData(...args: any[]) {
