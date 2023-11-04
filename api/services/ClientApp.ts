@@ -92,6 +92,23 @@ class ClientAppService {
         .getResponse();
     }
   }
+  async getApps() {
+    const data = await Db.getRepository(ClientApp)
+      .createQueryBuilder("client_app")
+      .select("client_app.name", "AppName")
+      .addSelect("client_app.id", "AppId")
+      .addSelect("client_app.callback_url", "CallbackUrl")
+      .addSelect("client_app.app_id", "AppAccessId")
+      .where("client_app.clientId = :ownerId", {
+        ownerId: this.#ownerId,
+      })
+      .execute();
+    const response = new ServiceResponse(200);
+    return response
+      .setData(data)
+      .setMessage(`${data ? "Apps fetched" : "No app found"} `)
+      .getResponse();
+  }
 }
 
 export default ClientAppService;

@@ -17,3 +17,13 @@ export const createNewApp = async (
     data: newApp.data,
   });
 };
+
+export const getClientApps = async (req: AuthenticatedRequest, res: Response) => {
+  const clientApp = new ClientAppService(req.user.clientId);
+  const appsData = await clientApp.getApps();
+  sendResponse(res, {
+    statusCode: appsData.status,
+    message: appsData.message,
+    data: appsData.data,
+  });
+};
