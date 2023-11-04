@@ -4,11 +4,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from "typeorm";
+import { ClientApp } from "./ClientApp";
 
 @Entity("clients", { schema: "public" })
 export class Client {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn("increment")
   id: number;
   @Column({ name: "first_name", type: "varchar" })
   firstName: string;
@@ -22,11 +24,12 @@ export class Client {
   ownerId: string;
   @Column({ name: "client_info", type: "json" })
   clientInfo?: clientInfo;
+  @OneToMany(() => ClientApp, (clientApp: ClientApp) => clientApp.client)
+  apps: ClientApp[];
   @CreateDateColumn({ name: "created_at", type: "timestamp with time zone" })
   createdAt: string;
   @UpdateDateColumn({ name: "updated_at", type: "timestamp with time zone" })
   updatedAt: string;
-
 
   getFullname() {
     return `${this.firstName}${this.lastName ? ` ${this.lastName}` : ""}`;
@@ -36,7 +39,7 @@ export class Client {
     return {
       name: fullName,
       email: this.email,
-      clientId: this.ownerId,
+      clientId: this.id,
       githubUsername: this?.clientInfo?.githubUsername,
     };
   }

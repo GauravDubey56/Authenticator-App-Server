@@ -1,11 +1,10 @@
 // import * as queryString from 'query-string';
 import * as Constants from "../config/constants";
 import Http from "../utils/http";
-import { GithubAuthInterface } from "../interfaces/auth.interface";
 import queryString from "querystring";
 import CustomError from "../utils/error";
 import Logger from "../utils/logging";
-class GithubAuthService implements GithubAuthInterface {
+class GithubAuthService {
   #accessCode: any;
   #authToken: any;
   constructor (code ?: any) {
@@ -27,7 +26,6 @@ class GithubAuthService implements GithubAuthInterface {
     this.#accessCode = code;
   }
   getAccessCode() {
-    console.log(this.#accessCode)
     return this.#accessCode
   }
   setAuthToken(token: any) {

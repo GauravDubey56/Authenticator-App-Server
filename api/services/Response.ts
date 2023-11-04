@@ -13,6 +13,7 @@ class ServiceResponse {
     this.message = message;
     this.data = data;
     this.error = null;
+    return this;
   }
   setError(error: serviceError, message?: string) {
     this.error = error;
@@ -25,12 +26,14 @@ class ServiceResponse {
   }
   setMessage(message: string) {
     this.message = message;
+    return this;
   }
   setDataKey(key: any, value: any) {
     if(!this.data) {
         this.data = {};
     }
     this.data[key] = value;
+    return this;
   }
   setDataObject(dataObject: any) {
     if(!this.data) {
@@ -40,6 +43,7 @@ class ServiceResponse {
         ...this.data,
         ...dataObject
     }
+    return this;
   }
   setData(...args: any[]) {
     if(args.length == 1 ){

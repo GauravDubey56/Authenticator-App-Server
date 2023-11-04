@@ -17,8 +17,8 @@ const DEFAULT_DB_CONFIG: PostgresConnectionOptions | DataSourceOptions = {
   migrationsTableName: "migrations",
   synchronize: true,
   logging: false,
-  entities: ["dist/database/entity/**/*.js"],
-  migrations: ["dist/database/migrations/**/*.js"],
+  entities: [__dirname + "/entity/**/*.js"],
+  migrations: [__dirname + "/entity/**/*.js"],
   timeTravelQueries: false,
 };
 
