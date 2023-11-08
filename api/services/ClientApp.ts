@@ -145,10 +145,9 @@ class ClientAppService {
     }
     await Db
       .getRepository(ClientApp)
-      .update(updateData, {
+      .update(clientApp, {
         id: appId
-      })
-      .catch(console.error);
+      });
     return response.setMessage("App updated").getResponse();
   }
 }

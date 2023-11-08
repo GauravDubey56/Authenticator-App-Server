@@ -19,6 +19,9 @@ app.get('/health', (req: Request, res: Response) => {
 app.use(AuthRouter)
 app.use(AppRouter)
 app.use(nextErrorHandler);
-app.listen(port, () => {
+if (process.env.SERVER_DEPLOYMENT == "aws_lambda") {
+  app.listen(port, () => {
     console.log(`Server is running at ${os.hostname()}:${port}`);
-});
+  });
+}
+export default app;
