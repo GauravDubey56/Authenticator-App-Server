@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "query-string": "^8.1.0",
+    "serverless-http": "^3.2.0",
     "typeorm": "^0.3.17"
   },
   "devDependencies": {
