@@ -1,5 +1,5 @@
 import { ClientApp } from "../database/entity/ClientApp";
-import Db from "../database/data-source";
+import Db, {initializeDb} from "../database/data-source";
 import CustomError from "../utils/error";
 import { CreateNewApp, UpdateApp } from "../interfaces/ClientAppInterface";
 import ServiceResponse from "./Response";
@@ -65,6 +65,7 @@ class ClientAppService {
     };
   }
   async getAppById(id: number) {
+    await initializeDb(Db);
     const data = await Db.getRepository(ClientApp)
       .createQueryBuilder("client_app")
       .select("client_app.name", "AppName")
@@ -83,6 +84,7 @@ class ClientAppService {
     }
   }
   async createApp({ callbackUrl, appName }: CreateNewApp) {
+    await initializeDb(Db);
     const response = new ServiceResponse(400);
     const existingApp = await this.getAppByName(appName);
     if (existingApp) {
@@ -112,6 +114,7 @@ class ClientAppService {
     }
   }
   async getApps(id ?: number) {
+    await initializeDb(Db);
     let data = Db.getRepository(ClientApp)
       .createQueryBuilder("client_app")
       .select("client_app.name", "AppName")
@@ -134,6 +137,7 @@ class ClientAppService {
       .getResponse();
   }
   async updateApp(appId: number, updateData: UpdateApp) {
+    await initializeDb(Db);
     const response = new ServiceResponse(200);
     await this.getAppById(appId);
     let clientApp: any = {};
@@ -143,11 +147,12 @@ class ClientAppService {
     if (updateData.callbackUrl) {
       clientApp.callbackUrl = updateData.callbackUrl;
     }
-    await Db
-      .getRepository(ClientApp)
-      .update(clientApp, {
-        id: appId
-      });
+    await Db.getRepository(ClientApp).update(
+      {
+        id: appId,
+      },
+      clientApp
+    );
     return response.setMessage("App updated").getResponse();
   }
 }
