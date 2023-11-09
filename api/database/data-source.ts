@@ -10,4 +10,15 @@ Db.initialize()
   .catch((error) => {
     Logger.error("Database connection error", error);
   });
+export const initializeDb = async (datasource: DataSource) => {
+  try {
+    if(!datasource.isInitialized) {
+      console.log(`Connecting to Db`)
+      await datasource.initialize();
+      console.log(`Db connected`)
+    }
+  } catch (error: any) {
+    console.error(`Could not connect to db`, error.message);
+  }
+}
 export default Db;
