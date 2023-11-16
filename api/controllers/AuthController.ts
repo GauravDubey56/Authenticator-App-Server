@@ -7,14 +7,8 @@ import ClientService from "../services/ClientService";
 
 export const generateAuthUrl = async (req: Request, res: Response) => {
   const authUrl = await GithubAuthService.generateAuthUrl();
-  Log.debug(`Auth url `, authUrl);
-  // return res.redirect(authUrl);
-  sendResponse(res, {
-    statusCode: 200,
-    data: {
-      redirectUrl: authUrl,
-    },
-  });
+  Log.debug(`Auth url`, authUrl);
+  res.redirect(authUrl);
 };
 
 export const handleGithubCallback = async (req: Request, res: Response) => {
