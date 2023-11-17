@@ -29,8 +29,8 @@ export const asyncHandler =
     try {
       await fn(req, res, next);
     } catch (error) {
-      const errorObject = handleApiException(error);
       console.error(error);
+      const errorObject = handleApiException(error);
       sendResponse(res, errorObject);
     }
   };

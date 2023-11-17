@@ -4,6 +4,9 @@ import * as Log from "../utils/logger";
 import sendResponse from "../utils/response";
 import UserService from "../services/ClientService";
 import ClientService from "../services/ClientService";
+import { GITHUB_REDIRECT_TO } from "../config/constants";
+import queryString from "querystring";
+import Logger from "../utils/logging";
 
 export const generateAuthUrl = async (req: Request, res: Response) => {
   const authUrl = await GithubAuthService.generateAuthUrl();
@@ -20,14 +23,23 @@ export const handleGithubCallback = async (req: Request, res: Response) => {
       githubUserData,
       githubEmail,
     });
+    Logger.log(`User exists token`, newUser)
+    if (newUser?.data?.token) {
+      const queryParam = queryString.stringify({
+        successToken: newUser.data.token,
+      });
+      sendResponse(res, {
+        redirectUrl: `${GITHUB_REDIRECT_TO}?${queryParam}`,
+        statusCode: 200,
+      });
+    }
+  } else {
+    const error = queryString.stringify({
+      error: `Something went wrong`,
+    });
     sendResponse(res, {
       statusCode: 200,
-      data: newUser,
-    });
-  } else {
-    sendResponse(res, {
-      statusCode: 400,
-      message: "No auth code received",
+      redirectUrl: `${GITHUB_REDIRECT_TO}?${error}`,
     });
   }
 };
