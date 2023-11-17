@@ -6,7 +6,6 @@ import ServiceResponse from "./Response";
 import Crypto from "crypto";
 import * as constants from "../config/constants";
 import queryString from "querystring";
-import dataSource from "../database/migration-runner";
 class ClientAppService {
   #ownerId: number;
   constructor(ownerId: number) {

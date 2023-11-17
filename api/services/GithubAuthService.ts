@@ -80,6 +80,7 @@ class GithubAuthService {
     const response = await Http.get(apiCall.url, { headers: apiCall.headers });
     Logger.log(response.data);
     if(Array.isArray(response.data)) {
+      Logger.log(`user received`);
       return response.data.filter((emailId: any) => emailId.primary)[0].email
     } else {
       throw new CustomError('Could not find email for github user')

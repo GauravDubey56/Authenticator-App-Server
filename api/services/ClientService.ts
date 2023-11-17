@@ -28,7 +28,11 @@ class ClientService {
       });
 
       if (client) {
-        response.success("Github user already exists", client);
+        Logger.log(`user already exists`)
+        const jwtToken = DefaultAuthHandler.createToken(client.getClient());
+        response.success("Github user already exists", {
+          token: jwtToken
+        });
         return response.getResponse();
       }
 
